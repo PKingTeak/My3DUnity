@@ -12,11 +12,20 @@ public class Player : MonoBehaviour
 
     private PlayerController controller;
 
+    public PlayerController Controller { get => controller;}
 
-    private void Start()
+    [SerializeField]
+    private Mesh playerMesh;
+    public Mesh PlayerMesh { get => PlayerMesh; set => PlayerMesh = value; }
+
+    public ItemData itemdata;
+    public Action addItem;
+
+    private void Awake()
     {
+        GameManager.Instance.Player = this;
         controller = GetComponent<PlayerController>();
-        
+        playerMesh = GetComponentInChildren<Mesh>();
     }
 
     public void SetPlayer()
