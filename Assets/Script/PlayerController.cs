@@ -4,9 +4,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 public class PlayerController : MonoBehaviour
 {
+
+
+
     public LayerMask groundlayer;
     [SerializeField]
     private float moveSpeed;
@@ -33,6 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+      
     }
 
     private void FixedUpdate()

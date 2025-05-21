@@ -1,18 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerState playerState { get => player; set => player = value; }
+    [SerializeField]
+    private PlayerState player;
+
+    private PlayerController controller;
+
+
+    private void Start()
     {
+        controller = GetComponent<PlayerController>();
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetPlayer()
     {
-        
+        this.GetComponentInChildren<MeshFilter>().mesh = player.curPlayerMesh;
     }
+
+ 
+
+
+
+    
+
+    //체력 정보를 state
 }
