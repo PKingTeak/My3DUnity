@@ -168,11 +168,12 @@ public class Inventory : MonoBehaviour
             switch (selectItem.item.buffType)
             {
                 case BuffType.Speed:
-                    controller.StartCoroutine(controller.ApplySpeedUP(selectItem.item.value,selectItem.item.duration)); //�����丵 ����
+                    controller.StartCoroutine(controller.ApplySpeedUP(selectItem.item.value, selectItem.item.duration)); //�����丵 ����
                     buffUIManager.AddBuffUI(selectItem.item);
                     break;
                 case BuffType.Jump:
                     controller.ApplyJumpUP(selectItem.item.value, selectItem.item.duration);
+                    buffUIManager.AddBuffUI(selectItem.item);
                     break;
 
             }
@@ -180,6 +181,10 @@ public class Inventory : MonoBehaviour
 
 
         }
+
+        //if(selctItem.item.type == ItemType.Weapon)
+        //기타 등등 이렇게 추가하는게 맞는건가?
+        
     }
 
 

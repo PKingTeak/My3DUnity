@@ -27,13 +27,14 @@ public class BuffUI : MonoBehaviour
 
     private void ShowTime()
     {
-        if (duration > 0)
+        if (curduration > 0)
         {
             timeText.text = curduration.ToString("F1"); //소수점1까지
             durationBar.fillAmount = curduration / duration;
         }
-        else
-        { 
+        else 
+        {
+        curduration = 0;
         this.gameObject.SetActive(false);
 
         }
