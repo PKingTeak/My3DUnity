@@ -15,9 +15,10 @@ public class Item : MonoBehaviour, IInteractable
     public ItemData data;
 
     public float duration;
-    [SerializeField]
-    private PlayerState player;
 
+
+    private float buffTime = 1f;
+    private float curTime;
     public string GetInteractInfo()
     {
         string str = $"{data.ItemName}\n{data.ItemInfo}";
@@ -33,21 +34,19 @@ public class Item : MonoBehaviour, IInteractable
     }
 
 
-    private float buffTime=1f;
-    private float curTime;
 
 
-    private Mesh prePlayerMesh;
+    private MeshFilter prePlayerMesh;
     private IEnumerator ChangeMeshBuff()
     {
-        prePlayerMesh = player.curPlayerMesh;
-        player.curPlayerMesh = this.GetComponent<MeshFilter>().mesh;
+        prePlayerMesh = GameManager.Instance.Player.PlayerMesh;
+        GameManager.Instance.Player.PlayerMesh = this.GetComponent<MeshFilter>();
         yield return new WaitForSeconds(duration);
-        player.curPlayerMesh = prePlayerMesh;
+        GameManager.Instance.Player.PlayerMesh = prePlayerMesh;
     }
 
    
-
+/*
     private void OnTriggerEnter(Collider other)
     {
         //테스트용
@@ -55,5 +54,6 @@ public class Item : MonoBehaviour, IInteractable
         StartCoroutine(ChangeMeshBuff());
         Destroy(this);
     }
+ */
 
 }

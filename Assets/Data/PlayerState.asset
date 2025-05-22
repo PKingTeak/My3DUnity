@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerState
   m_EditorClassIdentifier: 
   hp: 100
-  curPlayerMesh: {fileID: 0}
+  curPlayerMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}

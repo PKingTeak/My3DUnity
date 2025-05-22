@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
     public PlayerController Controller { get => controller;}
 
     [SerializeField]
-    private Mesh playerMesh;
-    public Mesh PlayerMesh { get => PlayerMesh; set => PlayerMesh = value; }
+    private MeshFilter playerMesh;
+    public MeshFilter PlayerMesh { get => PlayerMesh; set => PlayerMesh = value; }
 
     public ItemData itemdata;
     public Action addItem;
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     {
         GameManager.Instance.Player = this;
         controller = GetComponent<PlayerController>();
-        playerMesh = GetComponentInChildren<Mesh>();
+        playerMesh = GetComponentInChildren<MeshFilter>();
     }
 
     public void SetPlayer()

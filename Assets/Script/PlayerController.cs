@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+using UnityEngine.EventSystems;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
 
 
+    public Action inventory;
 
     public LayerMask groundlayer;
     [SerializeField]
     private float moveSpeed;
+    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     private Vector2 curMoveMentInput; //방향 입력
 
     [SerializeField]
@@ -27,8 +30,13 @@ public class PlayerController : MonoBehaviour
     private float maxLookX = 90f;
     private float curCamRotX;
     public float lookSensitivity; //마우스 감도조절
+    private bool canLook = true;
 
     Rigidbody rigid;
+
+    public Coroutine SpeedUp;
+    public Coroutine JumpUp;
+
 
 
 
@@ -114,8 +122,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnInventoryButton(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            inventory?.Invoke();
+            ToggleCursor(); //이걸 켜야지
+        }
+    }
 
- 
+    void ToggleCursor()
+    {
+        bool toggle = Cursor.lockState == CursorLockMode.Locked;
+        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        canLook = !toggle;
+
+    }
 
     private bool IsGrounded()
     {
@@ -141,7 +163,22 @@ public class PlayerController : MonoBehaviour
 
         return false;
 
-    }  
+    }
+
+    public IEnumerator ApplySpeedUP(float value , float time)
+    {
+        moveSpeed += value;
+        yield return new WaitForSeconds(time);
+        moveSpeed -= value;
+        SpeedUp = null;
+    }
 
 
+    public IEnumerator ApplyJumpUP(float value, float time)
+    {
+        jumpForce += value;
+        yield return new WaitForSeconds(time);
+        jumpForce -= value;
+        JumpUp = null;
+    }
 }

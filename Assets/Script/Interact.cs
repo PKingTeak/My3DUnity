@@ -42,7 +42,7 @@ public class Interact : MonoBehaviour
                 {
                     curInteractObject = hit.collider.gameObject;
                     curInteractable = hit.collider.GetComponent<IInteractable>();
-
+                    SetPromptText();
                 }
             }
             else
@@ -65,11 +65,14 @@ public class Interact : MonoBehaviour
 
     public void OnInteractInput(InputAction.CallbackContext context)
     {
+        if (context.phase == InputActionPhase.Started && curInteractable != null)
+        { 
         curInteractable.Oninteract();
         curInteractObject = null;
         curInteractable = null;
         promptText.gameObject.SetActive(false);
 
+        }
     }
 
 }

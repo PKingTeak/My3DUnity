@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum ItemType
 {
+    Buff,
     Consumable,
     Resource
 }
@@ -16,8 +17,8 @@ public enum ItemMesh
 
 public enum BuffType
 {
-    Sphere,
-    Square
+   Speed,
+   Jump
 }
 [System.Serializable]
 public class ItemDataConsumable
@@ -32,7 +33,9 @@ public class ItemData : ScriptableObject
     [Header("Info")]
     public string ItemName;
     public string ItemInfo;
+    public int value;
     public ItemType type;
+    public BuffType buffType;
     public Sprite icon;
     public GameObject dropPrefabs;
 
