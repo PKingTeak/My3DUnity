@@ -34,6 +34,7 @@ public class ItemData : ScriptableObject
     public string ItemName;
     public string ItemInfo;
     public int value;
+    public float duration;
     public ItemType type;
     public BuffType buffType;
     public Sprite icon;
