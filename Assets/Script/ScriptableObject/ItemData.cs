@@ -18,7 +18,9 @@ public enum ItemMesh
 public enum BuffType
 {
    Speed,
-   Jump
+   Jump,
+   DoubleJump
+
 }
 [System.Serializable]
 public class ItemDataConsumable

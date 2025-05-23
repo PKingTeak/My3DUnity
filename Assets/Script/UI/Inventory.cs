@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private BuffUIManager buffUIManager;
-
     private ItemSlot[] slots;
 
     public GameObject inventoryWindow;
@@ -22,6 +20,7 @@ public class Inventory : MonoBehaviour
 
 
     public GameObject useButton;
+    public BuffUIManager buffManager;
 
     private PlayerController controller;
    
@@ -30,7 +29,6 @@ public class Inventory : MonoBehaviour
     {
        
         controller = GameManager.Instance.Player.Controller;
-        buffUIManager = FindObjectOfType<BuffUIManager>(); // ë²„í”„ ê´€ë ¨ UI;
 
         controller.inventory += Toggle;
 
@@ -71,23 +69,23 @@ public class Inventory : MonoBehaviour
 
     public void AddItem()
     {
-        ItemData data = GameManager.Instance.Player.itemdata;//ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        ItemData data = GameManager.Instance.Player.itemdata;//ÀÌ°É ³ÖÀ»²¨
         if (data.canStack)
         {
-        //ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½
+        //ÀÌ¹Ì µ¥ÀÌÅÍ°¡ ÀÖ´Â µ¥ÀÌÅÍ¸é
             ItemSlot slot = GetItemStack(data);
             if (slot != null)
             {
                 slot.quantity++;
                 UpdateUI();
-                GameManager.Instance.Player.itemdata = null; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
+                GameManager.Instance.Player.itemdata = null; //°ªÀ» ºñ¿öÁÖ±â
                 return;
 
             }
         }
 
         ItemSlot emptySlot = GetEmptySlot();
-        //ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //ºñ¾îÀÖ´Â ½½·ÔÀÌ ¾øÀ¸¸é
         if (emptySlot != null)
         {
             emptySlot.item = data;
@@ -122,7 +120,7 @@ public class Inventory : MonoBehaviour
         return null;
     }
     public void UpdateUI()
-    {//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ clearï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½
+    {//°ªÀÌ ÀÖÀ¸¸é °»½Å ¾øÀ¸¸é clearÇØÁÖ´Â ÇÔ¼ö
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item != null)
@@ -151,7 +149,7 @@ public class Inventory : MonoBehaviour
 
     public void SelectItem(int index)
     {
-        if (slots[index].item == null) return;//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (slots[index].item == null) return;//¾ø´Â ¾ÆÀÌÅÛ
         selectItem = slots[index];
 
         selectedItemName.text = selectItem.item.ItemName;
@@ -168,23 +166,20 @@ public class Inventory : MonoBehaviour
             switch (selectItem.item.buffType)
             {
                 case BuffType.Speed:
-                    controller.StartCoroutine(controller.ApplySpeedUP(selectItem.item.value, selectItem.item.duration)); //ï¿½ï¿½ï¿½ï¿½ï¿½ä¸µ ï¿½ï¿½ï¿½ï¿½
-                    buffUIManager.AddBuffUI(selectItem.item);
+                    controller.StartCoroutine(controller.ApplySpeedUP(selectItem.item.value,selectItem.item.duration)); //¸®ÆåÅä¸µ ¿¹Á¤
+                    buffManager.AddBuffUI(selectItem.item);
                     break;
                 case BuffType.Jump:
                     controller.ApplyJumpUP(selectItem.item.value, selectItem.item.duration);
-                    buffUIManager.AddBuffUI(selectItem.item);
+                    buffManager.AddBuffUI(selectItem.item);
                     break;
+               
 
             }
             RemoveSelctedItem();
 
 
         }
-
-        //if(selctItem.item.type == ItemType.Weapon)
-        //ê¸°íƒ€ ë“±ë“± ì´ë ‡ê²Œ ì¶”ê°€í•˜ëŠ”ê²Œ ë§žëŠ”ê±´ê°€?
-        
     }
 
 
