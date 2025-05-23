@@ -52,7 +52,8 @@ public class Block : MonoBehaviour
             InteractBlock(player);
             if (type == BlockType.MoveBlock)
             {
-                connectObjects.Add(collision.transform);
+                collision.transform.SetParent(this.transform);
+                //connectObjects.Add(collision.transform);
                 //해당하는 오브젝트들 추가
             }
         }
@@ -68,7 +69,10 @@ public class Block : MonoBehaviour
 
 
         }
-        connectObjects.Remove(collision.transform);
+        collision.transform.SetParent(null);
+        //시간이 없어서 일단 플레이어만 적용 
+        //주말에 혼자서 해봐야겠다.
+        //connectObjects.Remove(collision.transform);
         //해당하는 오브젝트들 제거
     }
 
@@ -118,14 +122,13 @@ public class Block : MonoBehaviour
     {
         CheckDistance();
         MoveBlock();
+        MoveWithBlock();
     }
 
     private void MoveWithBlock()
     {
         if (connectObjects.Count > 0)
         {
-
-
             foreach (var obj in connectObjects)
             {
                 obj.transform.position += transform.position * moveSpeed * Time.deltaTime;
@@ -138,7 +141,7 @@ public class Block : MonoBehaviour
     private void MoveBlock()
     {
 
-        if (moveType == MoveType.horizontal)
+        if (moveType == MoveType.vertical)
         {
             if (isMax)
             {
@@ -151,7 +154,7 @@ public class Block : MonoBehaviour
             }
 
         }
-        else if(moveType == MoveType.vertical)
+        else if(moveType == MoveType.horizontal)
         {
             if (isMax)
             {
@@ -168,7 +171,7 @@ public class Block : MonoBehaviour
     }
     private void CheckDistance()
     {
-        if (moveType == MoveType.horizontal)
+        if (moveType == MoveType.vertical)
         {
 
 
@@ -182,7 +185,7 @@ public class Block : MonoBehaviour
 
             }
         }
-        else if (moveType == MoveType.vertical)
+        else if (moveType == MoveType.horizontal)
         {
             if (transform.position.x > maxDistance)
             {
