@@ -7,7 +7,8 @@ public enum BlockType
 {
     DamageBlock,
     NormalBlock,
-    JumpBlock
+    JumpBlock,
+    MoveBlock
 
 }
 public class Block : MonoBehaviour
