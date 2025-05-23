@@ -116,6 +116,7 @@ public class Block : MonoBehaviour
 
     private void Update()
     {
+        CheckDistance();
         MoveBlock();
     }
 
@@ -139,9 +140,9 @@ public class Block : MonoBehaviour
 
         if (moveType == MoveType.horizontal)
         {
-            if (CheckDistance())
+            if (isMax)
             {
-                transform.position += -Vector3.up * moveSpeed * Time.deltaTime;
+                transform.position -= Vector3.up * moveSpeed * Time.deltaTime;
             }
             else
             {
@@ -152,9 +153,9 @@ public class Block : MonoBehaviour
         }
         else if(moveType == MoveType.vertical)
         {
-            if (CheckDistance())
+            if (isMax)
             {
-                transform.position += -Vector3.right * moveSpeed * Time.deltaTime;
+                transform.position -= Vector3.right * moveSpeed * Time.deltaTime;
             }
             else
             {
@@ -165,7 +166,7 @@ public class Block : MonoBehaviour
         }
         
     }
-    private bool CheckDistance()
+    private void CheckDistance()
     {
         if (moveType == MoveType.horizontal)
         {
@@ -173,11 +174,11 @@ public class Block : MonoBehaviour
 
             if (transform.position.y > maxDistance)
             {
-                return true;
+                isMax = true;
             }
             else if (transform.position.y < minDistance)
             {
-                return false;
+                isMax = false;
 
             }
         }
@@ -185,16 +186,15 @@ public class Block : MonoBehaviour
         {
             if (transform.position.x > maxDistance)
             {
-                return true;
+                isMax = true;
             }
+            
             else if (transform.position.x < minDistance)
             {
-                return false;
+                isMax = false;
 
             }
         }
-
-        return false;
     }
 }
 
