@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.UIElements;
 
 public enum BlockType
 {
@@ -9,6 +11,15 @@ public enum BlockType
     NormalBlock,
     JumpBlock,
     MoveBlock
+
+}
+
+public enum MoveType
+{
+
+    horizontal,
+    vertical,
+    None
 
 }
 public class Block : MonoBehaviour
@@ -20,14 +31,30 @@ public class Block : MonoBehaviour
 
     [SerializeField]
     private int Damage;
-
     PlayerState state;
+
+    [Header("MoveBlock")]
+    [SerializeField] private MoveType moveType;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float maxDistance;
+    [SerializeField] private float minDistance;
+
+    private bool isMax = false;
+    [SerializeField] List<Transform> connectObjects = new List<Transform>();
+
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.TryGetComponent(out Player player))
         {
             state = player.playerState;
             InteractBlock(player);
+            if (type == BlockType.MoveBlock)
+            {
+                connectObjects.Add(collision.transform);
+                //해당하는 오브젝트들 추가
+            }
         }
 
     }
@@ -38,7 +65,11 @@ public class Block : MonoBehaviour
         {
 
             StopAllCoroutines();
+
+
         }
+        connectObjects.Remove(collision.transform);
+        //해당하는 오브젝트들 제거
     }
 
     public void InteractBlock(Player player)
@@ -66,7 +97,7 @@ public class Block : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        //1�ʸ��� ������ �ֱ� 
+        //1�ʸ��� ������ �ֱ� 
 
 
     }
@@ -83,5 +114,93 @@ public class Block : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        MoveBlock();
+    }
 
+    private void MoveWithBlock()
+    {
+        if (connectObjects.Count > 0)
+        {
+
+
+            foreach (var obj in connectObjects)
+            {
+                obj.transform.position += transform.position * moveSpeed * Time.deltaTime;
+                //같다라고 하는거랑 무슨차이인가? 
+                //아이에 같다고 지정해 버리면 가운데에 고정되어서 움직이게 된다. 
+            }
+        }
+    }
+
+    private void MoveBlock()
+    {
+
+        if (moveType == MoveType.horizontal)
+        {
+            if (CheckDistance())
+            {
+                transform.position += -Vector3.up * moveSpeed * Time.deltaTime;
+            }
+            else
+            {
+                transform.position += Vector3.up * moveSpeed * Time.deltaTime;
+
+            }
+
+        }
+        else if(moveType == MoveType.vertical)
+        {
+            if (CheckDistance())
+            {
+                transform.position += -Vector3.right * moveSpeed * Time.deltaTime;
+            }
+            else
+            {
+                transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+
+            }
+
+        }
+        
+    }
+    private bool CheckDistance()
+    {
+        if (moveType == MoveType.horizontal)
+        {
+
+
+            if (transform.position.y > maxDistance)
+            {
+                return true;
+            }
+            else if (transform.position.y < minDistance)
+            {
+                return false;
+
+            }
+        }
+        else if (moveType == MoveType.vertical)
+        {
+            if (transform.position.x > maxDistance)
+            {
+                return true;
+            }
+            else if (transform.position.x < minDistance)
+            {
+                return false;
+
+            }
+        }
+
+        return false;
+    }
 }
+
+
+
+
+   
+
+

@@ -1,9 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 //using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;  
+
+
 
 public class BuffUI : MonoBehaviour
 {
@@ -32,13 +33,13 @@ public class BuffUI : MonoBehaviour
             timeText.text = curduration.ToString("F1"); //소수점1까지
             durationBar.fillAmount = curduration / duration;
         }
-        else 
+        else
         {
-        curduration = 0;
-        this.gameObject.SetActive(false);
+            curduration = 0;
+            this.gameObject.SetActive(false);
 
         }
-       
+
 
     }
 
@@ -48,6 +49,6 @@ public class BuffUI : MonoBehaviour
     {
         curduration -= Time.deltaTime;
 
-        ShowTime();     
+        ShowTime();
     }
 }
