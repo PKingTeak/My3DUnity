@@ -34,10 +34,10 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rigid;
 
-    public Coroutine SpeedUp;
-    public Coroutine JumpUp;
-
-
+   
+    //더블점플
+    public int maxJumpCount =0;
+    public int jumpCount=0;
 
 
 
@@ -45,7 +45,10 @@ public class PlayerController : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
-      
+
+     
+
+
     }
 
     private void FixedUpdate()
@@ -114,9 +117,11 @@ public class PlayerController : MonoBehaviour
         if (context.phase == InputActionPhase.Started)
         {
 
-            if (IsGrounded()) //여기에 추가로 버프를 먹으면 
-            { 
-           rigid.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+            if (IsGrounded()|| maxJumpCount > jumpCount) //여기에 추가로 버프를 먹으면 
+            {
+             jumpCount++;
+             rigid.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+            
             }
           
         }
@@ -155,8 +160,9 @@ public class PlayerController : MonoBehaviour
         {
             if (Physics.Raycast(ray[i], 0.1f, groundlayer))
             {
+                jumpCount = 0;
                 return true;
-
+                
             }
 
         }
@@ -170,7 +176,7 @@ public class PlayerController : MonoBehaviour
         moveSpeed += value;
         yield return new WaitForSeconds(time);
         moveSpeed -= value;
-        SpeedUp = null;
+       
     }
 
 
@@ -179,6 +185,15 @@ public class PlayerController : MonoBehaviour
         jumpForce += value;
         yield return new WaitForSeconds(time);
         jumpForce -= value;
-        JumpUp = null;
+       
+    }
+
+    public IEnumerator ApplyDoubleJump(float time)
+    {
+
+        maxJumpCount = 2;
+        yield return new WaitForSeconds(time);
+        maxJumpCount = 0;
+     
     }
 }

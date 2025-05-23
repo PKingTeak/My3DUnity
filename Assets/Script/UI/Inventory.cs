@@ -170,7 +170,11 @@ public class Inventory : MonoBehaviour
                     buffManager.AddBuffUI(selectItem.item);
                     break;
                 case BuffType.Jump:
-                    controller.ApplyJumpUP(selectItem.item.value, selectItem.item.duration);
+                    controller.StartCoroutine(controller.ApplyJumpUP(selectItem.item.value, selectItem.item.duration));
+                    buffManager.AddBuffUI(selectItem.item);
+                    break;
+                case BuffType.DoubleJump:
+                    controller.StartCoroutine(controller.ApplyDoubleJump(selectItem.item.duration));
                     buffManager.AddBuffUI(selectItem.item);
                     break;
                
